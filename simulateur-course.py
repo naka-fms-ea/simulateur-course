@@ -44,4 +44,13 @@ if __name__ == '__main__':
 
         horses_list = create_grid_horses(nb_horses)
 
-        print(f"Liste des chevaux : {horses_list}")
+        while True:
+            for nb in range(len(horses_list)):
+                dice_integer = dice_roll()
+                print(f"Lancer de dés : {dice_integer}")
+                horses_list[nb]["speed"] = horses_list[nb]["speed"] + grid_speed_dice[horses_list[nb]["speed"] + 1][dice_integer]
+                print(f"Vitesse : {horses_list[nb]["speed"]}")
+                horses_list[nb]["distance"] = horses_list[nb]["distance"] + dict_distance_speed[horses_list[nb]["speed"]]
+                print(f"Distance : {horses_list[nb]["distance"]}")
+
+            print(f"Liste des cheveaux après la modification : {horses_list}")
