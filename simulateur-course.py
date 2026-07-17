@@ -10,7 +10,7 @@ def dice_roll():
 
 
 def create_grid_horses(nbhorses):
-    grid_horses = [{"name": f"horse {i}", "speed": 0, "distance": 0} for i in range(1, nbhorses + 1)]
+    grid_horses = [{"name": f"horse {i}", "speed": 0, "distance": 0, "rank": 0} for i in range(1, nbhorses + 1)]
     return grid_horses
 
 
@@ -38,19 +38,28 @@ if __name__ == '__main__':
         print(f"Nombre de chevaux : {nb_horses}")
         print(f"Type de la course : {race_type}")
 
-        dice_integer = dice_roll()
-
-        print(f"Résultat du dés : {dice_integer}")
-
         horses_list = create_grid_horses(nb_horses)
 
-        while True:
+        list_win = []
+
+        list_horses_ranking = []
+
+        while len(list_horses_ranking) < nb_horses:
             for nb in range(len(horses_list)):
+                print(f"{horses_list[nb]["name"]}")
                 dice_integer = dice_roll()
                 print(f"Lancer de dés : {dice_integer}")
-                horses_list[nb]["speed"] = horses_list[nb]["speed"] + grid_speed_dice[horses_list[nb]["speed"] + 1][dice_integer]
-                print(f"Vitesse : {horses_list[nb]["speed"]}")
-                horses_list[nb]["distance"] = horses_list[nb]["distance"] + dict_distance_speed[horses_list[nb]["speed"]]
-                print(f"Distance : {horses_list[nb]["distance"]}")
 
-            print(f"Liste des cheveaux après la modification : {horses_list}")
+                if grid_speed_dice[horses_list[nb]["speed"] + 1][dice_integer] == "DQ":
+                    horses_list[nb]["rank"] = "DQ"
+                    print(f"{horses_list[nb]["rank"]}")
+                elif horses_list[nb]["distance"] < 2400:
+                    horses_list[nb]["speed"] = horses_list[nb]["speed"] + grid_speed_dice[horses_list[nb]["speed"] + 1][dice_integer]
+                    print(f"Vitesse : {horses_list[nb]["speed"]}")
+                    horses_list[nb]["distance"] = horses_list[nb]["distance"] + dict_distance_speed[horses_list[nb]["speed"]]
+                    print(f"Distance : {horses_list[nb]["distance"]}")
+
+                if horses_list[nb]["distance"] >= 2400 and horses_list[nb]["rank"] != "DQ":
+                    list_horses_ranking.append(horses_list[nb]["name"])
+
+        print(f"Classement du {race_type} = {list_horses_ranking}")
